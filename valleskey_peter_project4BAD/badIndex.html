@@ -1,0 +1,228 @@
+<!DOCTYPE HTML>
+<!-- Peter Valleskey -->
+<!-- MIU 12/2011-->
+<!-- Project  BAD INDEX -->
+
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="HandheldFriendly" content="True"/>
+<meta name="MobileOptimized" content="320"/>
+<meta name="viewport" content="width=device-width, user-scalable=no"  />
+<meta http-equiv="cleartype" content="on"  />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+<link rel="stylesheet" href="css/styles.css"  />
+<script src="Javascript/libs/modernizr.custom.min.js"></script>
+<title>Adventuring Group Creator</title>
+</head>
+<body>
+  <div data-role="page" id="home">
+        <a href="badAdditem.html" data-ajax="false"><img id="cta" src="images/cta.jpg"/></a>
+
+        <a href="../valleskey_peter_project4/index.html" data-ajax="false"><div data-role="button" data-theme="a">
+          Good Design Page
+        </div></a>
+        
+	  <div data-role="content">
+        <ul data-role="listview">
+          <a href="#pictures"><li data-theme="d" data-role="button">Pictures</li></a>
+        </ul>
+      </div>
+      
+      <div data-role="content">
+        <ul data-role="listview" data-inset="true">
+          <li data-role="list-divider">Newest Adventurers</li>
+          <li><img src="../valleskey_peter_project3/images/priest.gif"/><p>Fred</p><p>Joined 11/21/2011 as a Priest</p></li>
+          <li><img src="../valleskey_peter_project3/images/mage.gif"/><p>Harry Potter</p><p>Joined 11/13/2011 as a Mage</p></li>
+          <li><img src="../valleskey_peter_project3/images/warrior.gif"/><p>Xena</p><p>Joined 11/12/2011 as a Warrior</p></li>
+          <li><img src="../valleskey_peter_project3/images/warrior.gif"/><p>Chuck Norris</p><p>Joined 11/11/2011 as a Warrior</p></li>
+          <li><img src="../valleskey_peter_project3/images/warrior.gif"/><p>Conan The Barbarian</p><p>Joined 11/11/2011 as a Warrior</p></li>
+        </ul>
+      </div>
+    
+      <div data-role="content">
+        <ul data-role="listview" id="warriorList" data-filter="true">
+          <li data-theme="e">warrior list</li>
+          <!-- javascript -->
+        </ul>
+      </div>
+      
+    
+    
+      <div data-role="content">
+        <ul data-role="listview" id="rogueList" data-filter="true">
+          <!-- javascript -->
+          <li data-theme="e">rogue list</li>
+        </ul>
+      </div>
+      
+    
+    
+      <div data-role="content">
+        <ul data-role="listview" id="hunterList" data-filter="true">
+          <!-- javascript -->
+          <li data-theme="e">hunter list</li>
+        </ul>
+      </div>
+      
+    
+    
+      <div data-role="content">
+        <ul data-role="listview" id="mageList" data-filter="true">
+          <!-- javascript -->
+          <li data-theme="e">mage list</li>
+        </ul>
+      </div>
+      
+    
+    
+      <div data-role="content">
+        <ul data-role="listview" id="priestList" data-filter="true">
+          <!-- javascript -->
+          <li data-theme="e">priest list</li>
+        </ul>
+      </div>
+      
+</div>
+    <!--  -->
+    
+<div data-role="page" id="pictures">
+	  
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#priest2" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/warrior.gif"/></div>
+	      <a href="#warrior2"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+<div data-role="page" id="warrior2" data-add-back-btn="true">
+	 
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#pictures" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/mainWarrior.gif"/></div>
+	      <a href="#rogue1"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+<div data-role="page" id="rogue1">
+	  
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#warrior2" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/rogue.gif"/></div>
+	      <a href="#rogue2"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+    
+    <div data-role="page" id="rogue2" >
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#rogue1" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/mainRogue.gif"/></div>
+	      <a href="#hunter1"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+<div data-role="page" id="hunter1" >
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#rogue2" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/hunter.gif"/></div>
+	      <a href="#hunter2"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+<div data-role="page" id="hunter2">
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#hunter1" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/mainHunter.gif"/></div>
+	      <a href="#mage1"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+<div data-role="page" id="mage1">
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#hunter2" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/mage.gif"/></div>
+	      <a href="#mage2"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+<div data-role="page" id="mage2" >
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#mage1" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/mainMage.gif"/></div>
+	      <a href="#priest1"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+<div data-role="page" id="priest1">
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#mage2" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/priest.gif"/></div>
+	      <a href="#priest2"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+<div data-role="page" id="priest2">
+      <div data-role="content">
+        <div class="ui-grid-b">
+	      <a href="#priest1" data-direction="reverse"><div class="ui-block-a">back</div></a>
+	      <div class="ui-block-b"><img src="images/mainPriest.gif"/></div>
+	      <a href="#pictures"><div class="ui-block-c">next</div></a>
+        </div>
+      </div>
+      <div data-role="footer" align="center">
+        <a href="badIndex.html" data-direction="reverse"><h4>Home</h4></a><img src="images/logo.gif"/>
+      </div>
+</div>
+
+
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+<script type="text/javascript" src="Javascript/json.js"></script>
+
+</body>
+</html>
