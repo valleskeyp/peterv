@@ -34,25 +34,6 @@ var clearLocal = function() {
 	}
 };	
 $('#clear').bind("click", clearLocal);// clears localstorage
-
-var getSelectedRadio = function () {
-	var sexValue = sex.filter(':checked').val();
-alert(sexValue);
-	/*var radios = document.forms[0].sex;
-	for (var i = 0;i < radios.length;i++) {   is this necessary?  test validator returns
-		if(radios[i].checked) {
-			sexValue = radios[i].value;
-		}
-	}*/
-};
-	
-var getSliderValue = function () {
-	if($('guild').checked) {
-		guildValue = $('guild').value;
-	} else {
-		guildValue = "Not in the guild";
-	}
-};
 	
 jQuery.extend(jQuery.mobile.datebox.prototype.options, {
   'dateFormat': 'dd.mm.YYYY',
@@ -62,14 +43,27 @@ jQuery.extend(jQuery.mobile.datebox.prototype.options, {
 var advForm = $('#advForm');
 
 advForm.validate({
-	submitHandler: function() {
+	submitHandler: function(e) {
 		var data = advForm.serializeArray();
-		console.log(data); //data = array[object { name: (HTML <input name="name">, value: (input from form) } 
-		console.log(data[0].value); // data[object].valueFromFormField
-		
-		alert("Form Submitted Sucessfully!");
-		//call storeData function
-		//submit form or window.location.reload();, whatever works
+		/*if (!key) {
+			var id          = Math.floor(Math.random()*10000000001);
+		//} else {
+			id = key;
+			}*/
+		  if (id == id) {
+			  var id = Math.floor(Math.random()*10000000001);
+		  } else { Math.floor(Math.random()*10000000001); };
+			var item            = {};
+			item.name       = ["Name: ",                data[0].value];
+			item.age        = ["Age: ",                 data[1].value];
+			item.sex        = ["Sex: ",                 data[2].value];
+			item.group      = ["Class: ",               data[3].value];
+			item.date       = ["Date joined: ",         data[4].value];
+			item.guild      = ["Guild member status: ", data[5].value];
+			item.comments   = ["Comments: ",            data[6].value];
+			localStorage.setItem(id, JSON.stringify(item));
+			alert("Adventurer saved sucessfully!");
+			window.location.reload();
 	}
 });
 
