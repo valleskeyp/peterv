@@ -67,27 +67,6 @@ advForm.validate({
 	}
 });
 
-//store form with a key
-var storeData = function(key) {
-	//makes (or uses an existing) key
-	if (!key) {
-		var id          = Math.floor(Math.random()*10000000001);
-	} else {
-		id = key;
-	}
-	var item            = {};
-		item.name       = ["Name: ",                data[0].value];
-		item.age        = ["Age: ",                 data[1].value];
-		item.sex        = ["Sex: ",                 data[2].value];
-		item.group      = ["Class: ",               data[3].value];
-		item.date       = ["Date joined: ",         data[4].value];
-		item.guild      = ["Guild member status: ", data[5].value];
-		item.comments   = ["Comments: ",            data[6].value];
-	localStorage.setItem(id, JSON.stringify(item));
-	alert("Adventurer saved sucessfully!");
-};
-
-
 
 if(localStorage.length === 0) {autoFillData();} // auto creates dummy data //
 //  This code reads the localstorage and outputs it to the webpage //
@@ -111,7 +90,9 @@ if(obj.group[1] === "Warrior") {
 		  $("#warriorList li:last-child").append('<p>' + obj[n][0] + ' ' + obj[n][1] + '</p>');
 		}
 	} $("#warriorList li:last-child").append('<div><a href="#" data-icon="delete" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Delete</a><a href="#" data-icon="gear" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
-		//$("#warriorList a").key = this.key;
+	  $("#warriorList div:last-child a").data("key", key);
+	  console.log(key);
+	  console.log($("#warriorList div:last-child a").data("key"));
 }
 if(obj.group[1] === "Rogue") {
 	$("#rogueList").append('<li data-role="list-divider"></li>');
