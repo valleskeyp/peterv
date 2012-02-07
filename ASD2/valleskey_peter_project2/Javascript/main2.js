@@ -3,30 +3,6 @@
 // Project 1
 
 
-$(document).ready(function() {
-
-xmlContact1 = "<num1>";
-xmlContact1 = xmlContact1 + "<name>Chuck Norris</name>";
-xmlContact1 = xmlContact1 + "<age>45</age>";
-xmlContact1 = xmlContact1 + "<group>Warrior</group>";
-xmlContact1 = xmlContact1 + "<sex>Male</sex>";
-xmlContact1 = xmlContact1 + "<date>1/12/2012</date>";
-xmlContact1 = xmlContact1 + "<guild>Not in the guild</guild>";
-xmlContact1 = xmlContact1 + "<comments>Chuck's tears cure cancer, too bad he has never cried.</comments>";
-xmlContact1 = xmlContact1 + "</num1>";
-
-xmlDoc = $.parseXML( xmlContact1 );
-$xml = $ ( xmlDoc );
-console.log($xml.find( "num1" ).find( "name" ));
-console.log(test);
-$name = $xml.find( "name" );
-$age = $xml.find( "age" );
-$group = $xml.find( "group" );
-$sex = $xml.find( "sex" );
-$date = $xml.find( "date" );
-$guild = $xml.find( "guild" );
-$comments = $xml.find( "comments" );
-console.log($name + $age + $group + $sex + $date + $guild + $comments);
 
 function makeDate() {
 	var mydate=new Date()
@@ -92,18 +68,34 @@ advForm.validate({
 });
 
 
-if(localStorage.length === 0) {autoFillData();} // auto creates dummy data //
+if(localStorage.length === 0) {
+	$.ajax({  // Parse out XML data into localstorage
+		url: "XML/text.xml",
+		dataType: "xml",
+		error: function(result){ console.log(result); },
+		success: function(data){
+			var xmlOne = ('{"name":["Name: ", "'+$(data).find("num1").find("name").text()+'"],"age":["Age: ", "'+$(data).find("num1").find("age").text()+'"],"sex":["Sex: ", "'+$(data).find("num1").find("sex").text()+'"],"group":["Class: ", "'+$(data).find("num1").find("group").text()+'"],"date":["Date Joined: ", "'+$(data).find("num1").find("date").text()+'"],"guild":["Guild Member? ", "'+$(data).find("num1").find("guild").text()+'"],"comments":["Comments: ", "'+$(data).find("num1").find("comments").text()+'"]}');
+			var xmlTwo = ('{"name":["Name: ", "'+$(data).find("num2").find("name").text()+'"],"age":["Age: ", "'+$(data).find("num2").find("age").text()+'"],"sex":["Sex: ", "'+$(data).find("num2").find("sex").text()+'"],"group":["Class: ", "'+$(data).find("num2").find("group").text()+'"],"date":["Date Joined: ", "'+$(data).find("num2").find("date").text()+'"],"guild":["Guild Member? ", "'+$(data).find("num2").find("guild").text()+'"],"comments":["Comments: ", "'+$(data).find("num2").find("comments").text()+'"]}');
+			var id = Math.floor(Math.random()*100000000001);
+			localStorage.setItem(id, xmlOne);
+			var id = Math.floor(Math.random()*100000000001);
+			localStorage.setItem(id, xmlTwo);
+			autoFillData();
+		}
+    });
+} // auto creates dummy data //
+	
 //  This code reads the localstorage and outputs it to the webpage //
 for(var i = 0, len=localStorage.length; i < len; i++) {
-            
+
 var key = localStorage.key(i);
 var value = localStorage.getItem(key);
 var obj = JSON.parse(value);
 
-if(typeof(obj) != 'object') {
-	continue;
-}
-	
+if(value=="{}"){continue;};//Won't need this soon, holy crap it bothered me.
+if(typeof(obj)!='object'){continue;};//Localstorage won't break..as much..
+
+
 if(obj.group[1] === "Warrior") {
 	$("#warriorList").append('<li data-role="list-divider"></li>');
 	$("#warriorList").append('<li data-theme=d></li>');
@@ -163,5 +155,3 @@ if(obj.group[1] === "Priest") {
 	} $("#priestList li:last-child").append('<div><a href="#" data-icon="delete" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Delete</a><a href="#" data-icon="gear" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
 }
 }; // end of output to page from localstorage //
-
-});
