@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Peter Valleskey
 ASD 2/2012
-Project 1 */
+Project 2 */
 
 
 h1 {
@@ -13,10 +13,16 @@ ul {
 li {
 	color:#000;
 }
+.ui-field-contain div.ui-slider-switch {
+	width: 100%;
+}
 li#list {
 	border-top:solid;
 	border-color:#000;
 	padding:10px;
+}
+.ui-field-contain label.ui-slider {
+	width: 100%;
 }
 legend {
 	text-align:center;

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Peter Valleskey
+     ASD Project 2, 2/2012 -->
 <contacts>
   <num1>
 	<name>He-man</name>
@@ -16,6 +18,6 @@
 	<sex>Male</sex>
 	<date>1/12/2012</date>
 	<guild>Not in the guild</guild>
-	<comments>He's lost.</comments>
+	<comments>It was supposed to be a 3 hour tour!</comments>
   </num2>
 </contacts>

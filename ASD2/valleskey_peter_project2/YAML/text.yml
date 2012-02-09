@@ -1,0 +1,47 @@
+#Peter Valleskey
+#ASD Week 2, 2/2012
+
+yaml1:
+  name:
+    - "Name: "
+    - Gandalf
+  age:
+    - "Age: "
+    - "80"
+  sex:
+    - "Sex: "
+    - Male
+  group:
+    - "Class: "
+    - Mage
+  date:
+    - "Date joined: "
+    - "2/3/2013"
+  guild:
+    - "Guild member? "
+    - "Yes"
+  comments:
+    - "Comments: "
+    - "You shall not pass!!"
+yaml2:
+  name:
+    - "Name: "
+    - Gollum
+  age:
+    - "Age: "
+    - "80"
+  sex:
+    - "Sex: "
+    - Male
+  group:
+    - "Class: "
+    - Rogue
+  date:
+    - "Date joined: "
+    - "12/12/2011"
+  guild:
+    - "Guild member? "
+    - "No"
+  comments:
+    - "Comments: "
+    - "Precciiooussss..."

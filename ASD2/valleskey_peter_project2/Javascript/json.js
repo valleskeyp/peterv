@@ -1,6 +1,6 @@
 // Peter Valleskey
 // ASD 2/2012
-// Project 1
+// Project 2
 
 var autoFillData = function() {
 		var json = {
