@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Peter Valleskey
+     ASD Project 2, 2/2012 -->
+<contacts>
+  <num1>
+	<name>He-man</name>
+	<age>45</age>
+	<group>Warrior</group>
+	<sex>Male</sex>
+	<date>1/12/2012</date>
+	<guild>Not in the guild</guild>
+	<comments>THE master of the universe.</comments>
+  </num1>
+  <num2>
+	<name>Gilligan</name>
+	<age>28</age>
+	<group>Warrior</group>
+	<sex>Male</sex>
+	<date>1/12/2012</date>
+	<guild>Not in the guild</guild>
+	<comments>It was supposed to be a 3 hour tour!</comments>
+  </num2>
+</contacts>
