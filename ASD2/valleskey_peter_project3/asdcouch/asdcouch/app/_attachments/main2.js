@@ -62,6 +62,21 @@ advForm.validate({
 	}
 });
 
+// JQuery Couch call to READ the database and output to my list-view list pages
+$.couch.db("adventure").view("adv/adventurers", {
+	success: function(data) {
+		for(i=0; i<data.rows.length; i++){
+			for(var n in data.rows[i].value){
+				var cat = ""+n+"";
+				if(data.rows[i].value.group[1] === "Warrior") {
+					console.log(data.rows[i].value[cat][0] + " " + data.rows[i].value[cat][1]);
+				}
+			}console.log("-");
+		}
+	}// to do: cannibalize for loop below that reads localstorage,
+     //should be easy now that the syntax is worked out.
+}) 
+
 // creates dummy data //
 if(localStorage.length === 0) {
 	$.ajax({  
@@ -187,20 +202,3 @@ var deleteButton = function() {
 	}
 };	
 $('a.delete').bind("click", deleteButton);// deletes an entry
-
-$.ajax({  
-	url: "_view/adventurers",
-	dataType: "json",
-	error: function(result){ console.log(result); },
-	success: function(data){
-		len = data.rows.length;
-		var choice = Math.floor(Math.random()*len);
-		$("#random").append('<h3>' + data.rows[choice].value.name[0] + ' ' + data.rows[choice].value.name[1] + '</h3>');
-		$("#random").append('<p>' + data.rows[choice].value.age[0] + ' ' + data.rows[choice].value.age[1] + '</p>');
-		$("#random").append('<p>' + data.rows[choice].value.sex[0] + ' ' + data.rows[choice].value.sex[1] + '</p>');
-		$("#random").append('<p>' + data.rows[choice].value.group[0] + ' ' + data.rows[choice].value.group[1] + '</p>');
-		$("#random").append('<p>' + data.rows[choice].value.date[0] + ' ' + data.rows[choice].value.date[1] + '</p>');
-		$("#random").append('<p>' + data.rows[choice].value.guild[0] + ' ' + data.rows[choice].value.guild[1] + '</p>');
-		$("#random").append('<p>' + data.rows[choice].value.comments[0] + ' ' + data.rows[choice].value.comments[1] + '</p>');
-	}
-});
