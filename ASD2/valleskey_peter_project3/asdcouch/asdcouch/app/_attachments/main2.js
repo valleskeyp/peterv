@@ -1,6 +1,6 @@
 //Peter Valleskey
 //ASD 2/2012
-//Project 3
+//Project 4
 
 
 function makeDate() {
@@ -22,183 +22,224 @@ function makeDate() {
 }   
 $('#date').val(makeDate()); // function to create formatted date - then jquery call to populate it
 
-var clearLocal = function() {
-	if(localStorage.length === 0) {
-		alert("There is no data to clear.");
-	}else{
-		localStorage.clear();
-		alert("Data cleared.");
-		window.location.reload();
-		return false;
-	}
-};	
-$('#clear').bind("click", clearLocal);// clears localstorage
-
 jQuery.extend(jQuery.mobile.datebox.prototype.options, {
 	'dateFormat': 'dd.mm.YYYY',
 	'headerFormat': 'dd.mm.YYYY'
 });
 
 var advForm = $('#advForm');
-
 advForm.validate({
+	error: function(result){ console.log(result); },
 	submitHandler: function(e) {
 		var data = advForm.serializeArray();
-		var key = $("#submit").attr("key");
-		if (!key) {
-			var id          = Math.floor(Math.random()*10000000001);
-		} else { id = key; }
-		var item            = {};
-		item.name       = ["Name: ",                data[0].value];
-		item.age        = ["Age: ",                 data[1].value];
-		item.sex        = ["Sex: ",                 data[2].value];
-		item.group      = ["Class: ",               data[3].value];
-		item.date       = ["Date joined: ",         data[4].value];
-		item.guild      = ["Guild member status: ", data[5].value];
-		item.comments   = ["Comments: ",            data[6].value];
-		localStorage.setItem(id, JSON.stringify(item));
-		alert("Adventurer saved sucessfully!");
-		window.location.reload();
+		var keyID = $("#submit").attr("key");
+		if (keyID) {
+			$.couch.db("adventure").openDoc(keyID, {
+				error: function(result){ console.log(result); },
+				success: function(doc) {
+					doc.age        = ["Age: ",                 data[0].value];
+					doc.sex        = ["Sex: ",                 data[1].value];
+					doc.group      = ["Class: ",               data[2].value];
+					doc.date       = ["Date joined: ",         data[3].value];
+					doc.guild      = ["Guild member status: ", data[4].value];
+					doc.comments   = ["Comments: ",            data[5].value];
+					$.couch.db('adventure').saveDoc(doc);
+					alert("Adventurer saved sucessfully!");
+					$.mobile.changePage("#home");
+					$("#home").live("pageshow", function() {
+						readDatabase();
+					});
+				}
+			});
+		} else {
+			var ID = "key:"+data[0].value;
+			var item        = {};
+			item._id        = ID;
+			item.name       = ["Name: ",                data[0].value];
+			item.age        = ["Age: ",                 data[1].value];
+			item.sex        = ["Sex: ",                 data[2].value];
+			item.group      = ["Class: ",               data[3].value];
+			item.date       = ["Date joined: ",         data[4].value];
+			item.guild      = ["Guild member status: ", data[5].value];
+			item.comments   = ["Comments: ",            data[6].value];
+		
+			$.couch.db('adventure').saveDoc(item);
+			alert("Adventurer saved sucessfully!");
+		}
+		
+		$('#name').attr('value', "");
+		$('#age').attr('value', 26);
+		$('#sex').attr('value', "Male");
+		$('#guild').attr('value', "Not in the guild");
+		$('#groups').attr('value', "");
+		$('#date').val(makeDate());
+		$('#comments').attr('value', "");
+		
+		$('#name').textinput('enable');
+		$("#submit").removeAttr('key');
+		$("#delete").html("");
+		$('#groups').selectmenu('refresh');
+		$('#age').slider('refresh');
+		$('#sex').slider('refresh');
+		$('#guild').slider('refresh');
 	}
 });
 
 // JQuery Couch call to READ the database and output to my list-view list pages
+var readDatabase = function() {
 $.couch.db("adventure").view("adv/adventurers", {
 	success: function(data) {
+		$("#warriorList").html("");
+		$("#rogueList").html("");
+		$("#hunterList").html("");
+		$("#mageList").html("");
+		$("#priestList").html("");
 		for(i=0; i<data.rows.length; i++){
-			for(var n in data.rows[i].value){
-				var cat = ""+n+"";
-				if(data.rows[i].value.group[1] === "Warrior") {
-					console.log(data.rows[i].value[cat][0] + " " + data.rows[i].value[cat][1]);
+			var key = data.rows[i].id;
+			
+			if(data.rows[i].value.group[1] === "Warrior") {
+				$("#warriorList").append('<li data-role="list-divider"></li>');
+				$("#warriorList").append('<li data-theme=d></li>');
+				for(var n in data.rows[i].value){
+					var cat = ""+n+"";
+					if(data.rows[i].value[cat][0] === "Name: ") {
+						$("#warriorList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
+					} else {
+						$("#warriorList li:last-child").append('<p>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</p>');
+					}
 				}
-			}console.log("-");
-		}
-	}// to do: cannibalize for loop below that reads localstorage,
-     //should be easy now that the syntax is worked out.
-}) 
-
-// creates dummy data //
-if(localStorage.length === 0) {
-	$.ajax({  
-		url: "text.json",
-		dataType: "json",
-		error: function(result){ console.log(result); },
-		success: function(data){
-			var json = data.json;
-			for(var n in json) {
-				var id = Math.floor(Math.random()*100000000001);
-				localStorage.setItem(id, JSON.stringify(json[n]));
+				$("#warriorList li:last-child").append('<div><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
+				$("#warriorList li:last-child div:last-child a:first-child").attr("key", key);
 			}
+			if(data.rows[i].value.group[1] === "Rogue") {
+				$("#rogueList").append('<li data-role="list-divider"></li>');
+				$("#rogueList").append('<li data-theme=d></li>');
+				for(var n in data.rows[i].value){
+					var cat = ""+n+"";
+					if(data.rows[i].value[cat][0] === "Name: ") {
+						$("#rogueList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
+					} else {
+						$("#rogueList li:last-child").append('<p>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</p>');
+					}
+				}
+				$("#rogueList li:last-child").append('<div><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
+				$("#rogueList li:last-child div:last-child a").attr("key", key);
+			}
+			if(data.rows[i].value.group[1] === "Hunter") {
+				$("#hunterList").append('<li data-role="list-divider"></li>');
+				$("#hunterList").append('<li data-theme=d></li>');
+				for(var n in data.rows[i].value){
+					var cat = ""+n+"";
+					if(data.rows[i].value[cat][0] === "Name: ") {
+						$("#hunterList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
+					} else {
+						$("#hunterList li:last-child").append('<p>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</p>');
+					}
+				}
+				$("#hunterList li:last-child").append('<div><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
+				$("#hunterList li:last-child div:last-child a").attr("key", key);
+			}
+			if(data.rows[i].value.group[1] === "Mage") {
+				$("#mageList").append('<li data-role="list-divider"></li>');
+				$("#mageList").append('<li data-theme=d></li>');
+				for(var n in data.rows[i].value){
+					var cat = ""+n+"";
+					if(data.rows[i].value[cat][0] === "Name: ") {
+						$("#mageList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
+					} else {
+						$("#mageList li:last-child").append('<p>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</p>');
+					}
+				}
+				$("#mageList li:last-child").append('<div><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
+				$("#mageList li:last-child div:last-child a").attr("key", key);
+			}
+			if(data.rows[i].value.group[1] === "Priest") {
+				$("#priestList").append('<li data-role="list-divider"></li>');
+				$("#priestList").append('<li data-theme=d></li>');
+				for(var n in data.rows[i].value){
+					var cat = ""+n+"";
+					if(data.rows[i].value[cat][0] === "Name: ") {
+						$("#priestList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
+					} else {
+						$("#priestList li:last-child").append('<p>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</p>');
+					}
+				}
+				$("#priestList li:last-child").append('<div><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
+				$("#priestList li:last-child div:last-child a").attr("key", key);
+			}
+		}$('a.edit').bind("click", editButton);// edits an entry
+		 $('#warriorList').listview('refresh');
+		 $('.edit').button();
+		 $('.edit').button('refresh');
+	} 
+});
+}
+$("#home").live("pageshow", function() {
+	readDatabase();
+});
+var editButton = function() {
+	keyID = $(this).attr("key");
+	$.couch.db("adventure").openDoc(keyID, {
+		success: function(data) {
+			$('#name').attr('value', data.name[1]);
+			$('#age').attr('value', data.age[1]);
+			$('#sex').attr('value', data.sex[1]);
+			$('#guild').attr('value', data.guild[1]);
+			$('#groups').attr('value', data.group[1]);
+			$('#date').attr('value', data.date[1]);
+			$('#comments').attr('value', data.comments[1]);
+			
+			$("#submit").attr('key', keyID);
+			$('#name').textinput('disable');
+			$("#delete").append('<a href="#" data-icon="delete" id="deleteBtn" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Delete</a>');
+			$('#deleteBtn').bind("click", deleteButton);// deletes an entry
+			$('#deleteBtn').button();
+			$('#deleteBtn').button('refresh');
+			$("#deleteBtn").attr('key', keyID);
+			$('#age').slider('refresh');
+			$('#sex').slider('refresh');
+			$('#guild').slider('refresh');
+			$('#groups').selectmenu('refresh');
 		}
 	});
-}
-//  This code reads the localstorage and outputs it to the webpage //
-for(var i = 0, len=localStorage.length; i < len; i++) {
-
-var key = localStorage.key(i);
-var value = localStorage.getItem(key);
-var obj = JSON.parse(value);
-
-if(value=="{}"){continue;};//Won't need this soon, holy crap it bothered me.
-if(typeof(obj)!='object'){continue;};//Localstorage won't break..as much..
-
-
-if(obj.group[1] === "Warrior") {
-	$("#warriorList").append('<li data-role="list-divider"></li>');
-	$("#warriorList").append('<li data-theme=d></li>');
-	for(var n in obj){
-		if(n === "name") {
-			$("#warriorList li:last-child").append('<h3>' + obj[n][0] + ' ' + obj[n][1] + '</h3>');
-		} else {
-		  $("#warriorList li:last-child").append('<p>' + obj[n][0] + ' ' + obj[n][1] + '</p>');
-		}
-	} $("#warriorList li:last-child").append('<div><a href="#" data-icon="delete" class="delete" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Delete</a><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
-	  $("#warriorList li:last-child div:last-child a:first-child").attr("key", key);
-	  $("#warriorList li:last-child div:last-child a:last-child").attr("key", key);
-}
-if(obj.group[1] === "Rogue") {
-	$("#rogueList").append('<li data-role="list-divider"></li>');
-	$("#rogueList").append('<li data-theme=d></li>');
-	for(var n in obj){
-		if(n === "name") {
-			$("#rogueList li:last-child").append('<h3>' + obj[n][0] + ' ' + obj[n][1] + '</h3>');
-		} else {
-		  $("#rogueList li:last-child").append('<p>' + obj[n][0] + ' ' + obj[n][1] + '</p>');
-		}
-	} $("#rogueList li:last-child").append('<div><a href="#" data-icon="delete" class="delete" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Delete</a><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
-	  $("#rogueList li:last-child div:last-child a:first-child").attr("key", key);
-	  $("#rogueList li:last-child div:last-child a:last-child").attr("key", key);
-}
-if(obj.group[1] === "Hunter") {
-	$("#hunterList").append('<li data-role="list-divider"></li>');
-	$("#hunterList").append('<li data-theme=d></li>');
-	for(var n in obj){
-		if(n === "name") {
-			$("#hunterList li:last-child").append('<h3>' + obj[n][0] + ' ' + obj[n][1] + '</h3>');
-		} else {
-		  $("#hunterList li:last-child").append('<p>' + obj[n][0] + ' ' + obj[n][1] + '</p>');
-		}
-	} $("#hunterList li:last-child").append('<div><a href="#" data-icon="delete" class="delete" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Delete</a><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
-	  $("#hunterList li:last-child div:last-child a:first-child").attr("key", key);
-	  $("#hunterList li:last-child div:last-child a:last-child").attr("key", key);
-}
-if(obj.group[1] === "Mage") {
-	$("#mageList").append('<li data-role="list-divider"></li>');
-	$("#mageList").append('<li data-theme=d></li>');
-	for(var n in obj){
-		if(n === "name") {
-			$("#mageList li:last-child").append('<h3>' + obj[n][0] + ' ' + obj[n][1] + '</h3>');
-		} else {
-		  $("#mageList li:last-child").append('<p>' + obj[n][0] + ' ' + obj[n][1] + '</p>');
-		}
-	} $("#mageList li:last-child").append('<div><a href="#" data-icon="delete" class="delete" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Delete</a><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
-	  $("#mageList li:last-child div:last-child a:first-child").attr("key", key);
-	  $("#mageList li:last-child div:last-child a:last-child").attr("key", key);
-}
-if(obj.group[1] === "Priest") {
-	$("#priestList").append('<li data-role="list-divider"></li>');
-	$("#priestList").append('<li data-theme=d></li>');
-	for(var n in obj){
-		if(n === "name") {
-			$("#priestList li:last-child").append('<h3>' + obj[n][0] + ' ' + obj[n][1] + '</h3>');
-		} else {
-		  $("#priestList li:last-child").append('<p>' + obj[n][0] + ' ' + obj[n][1] + '</p>');
-		}
-	} $("#priestList li:last-child").append('<div><a href="#" data-icon="delete" class="delete" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Delete</a><a href="#formPage" data-icon="gear" class="edit" data-role="button" data-theme="a" data-inline="true" data-ajax="false">Edit</a></div>');
-	  $("#priestList li:last-child div:last-child a:first-child").attr("key", key);
-	  $("#priestList li:last-child div:last-child a:last-child").attr("key", key);
-}
-}; // end of output to page from localstorage //
-
-var editButton = function() {
-	key = $(this).attr("key")
-	var value = localStorage.getItem(key);
-	var item = JSON.parse(value);
-	$("#submit").html('Edit').attr('key', key);
-	console.log("test");
-	console.log(item.group[1]);
-	console.log($("#submit").attr("key"));
-
-	$('#groups').attr('value', item.group[1]);
-	$('#name').attr('value', item.name[1]);
-	$('#age').attr('value', item.age[1]);
-	$('#sex').attr('value', item.sex[1]);
-	$('#guild').attr('value', item.guild[1]);
-	$('#groups').attr('value', item.group[1]);
-	$('#date').attr('value', item.date[1]);
-	$('#comments').attr('value', item.comments[1]);
-
 };
-$('a.edit').bind("click", editButton);// edits an entry
+
 
 var deleteButton = function() {
 	var ask = confirm("Are you sure you want to delete this adventurer?");
+	keyID = $("#deleteBtn").attr("key");
 	if(ask) {
-		localStorage.removeItem($(this).attr("key"));
-		alert("Adventurer was deleted!");
-		window.location.reload();
+		$.couch.db("adventure").openDoc(keyID, {
+			success: function(data) {
+				var delData = {};
+				delData._id = data._id;
+				delData._rev = data._rev;
+				$.couch.db("adventure").removeDoc(delData);
+				alert("Adventurer was deleted!");
+				
+				$('#name').attr('value', "");
+				$('#age').attr('value', 26);
+				$('#sex').attr('value', "Male");
+				$('#guild').attr('value', "Not in the guild");
+				$('#groups').attr('value', "");
+				$('#date').val(makeDate());
+				$('#comments').attr('value', "");
+				
+				$("#submit").removeAttr('key');
+				$("#delete").html("");
+				$('#age').slider('refresh');
+				$('#sex').slider('refresh');
+				$('#guild').slider('refresh');
+				$('#groups').selectmenu('refresh');
+				$('#name').textinput('enable');
+
+				$.mobile.changePage("#home");
+				$("#home").live("pageshow", function() {
+					readDatabase();
+				});
+			}
+		});
 	} else {
 		alert("Adventurer was not deleted.");
 	}
 };	
-$('a.delete').bind("click", deleteButton);// deletes an entry
