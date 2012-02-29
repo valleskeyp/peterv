@@ -2,7 +2,7 @@
 //ASD 2/2012
 //Project 4
 
-
+$( '#home' ).live( 'pageinit',function(event){
 function makeDate() {
 	var mydate=new Date()
 	var theyear=mydate.getYear()
@@ -44,11 +44,9 @@ advForm.validate({
 					doc.guild      = ["Guild member status: ", data[4].value];
 					doc.comments   = ["Comments: ",            data[5].value];
 					$.couch.db('adventure').saveDoc(doc);
-					alert("Adventurer saved sucessfully!");
-					$.mobile.changePage("#home");
-					$("#home").live("pageshow", function() {
-						readDatabase();
-					});
+					//alert("Adventurer saved sucessfully!");
+					postListing(doc, "edit");
+					//$.mobile.changePage("#postPage");
 				}
 			});
 		} else {
@@ -64,7 +62,8 @@ advForm.validate({
 			item.comments   = ["Comments: ",            data[6].value];
 		
 			$.couch.db('adventure').saveDoc(item);
-			alert("Adventurer saved sucessfully!");
+			//alert("Adventurer saved sucessfully!");
+			postListing(item, "new");
 		}
 		
 		$('#name').attr('value', "");
@@ -84,24 +83,43 @@ advForm.validate({
 		$('#guild').slider('refresh');
 	}
 });
-
+var postListing = function(doc, type) {
+			$("#postList").append('<li data-role="list-divider"></li>');
+			$("#postList").append('<li data-theme=d></li>');
+			$("#postList li:last-child").append('<h3>' + doc.name[0] + ' ' + doc.name[1] + '</h3>');
+			$("#postList li:last-child").append('<p>' + doc.age[0] + ' ' + doc.age[1] + '</p>');
+			$("#postList li:last-child").append('<p>' + doc.sex[0] + ' ' + doc.sex[1] + '</p>');
+			$("#postList li:last-child").append('<p>' + doc.group[0] + ' ' + doc.group[1] + '</p>');
+			$("#postList li:last-child").append('<p>' + doc.date[0] + ' ' + doc.date[1] + '</p>');
+			$("#postList li:last-child").append('<p>' + doc.guild[0] + ' ' + doc.guild[1] + '</p>');
+			$("#postList li:last-child").append('<p>' + doc.comments[0] + ' ' + doc.comments[1] + '</p>');
+			$("#postList").append('<li data-role="list-divider"></li>');
+			$("#postList").append('<li data-theme=d></li>');
+			if(type === "edit") {
+				$("#postList li:last-child").append('<h3>You successfully edited this entry!</h3>');
+				$("#postList li:last-child").append('<p>Revision: '+doc._rev+'');
+			} else if(type === "delete") {
+				$("#postList li:last-child").append('<h3>You successfully deleted this entry!</h3>');
+			} else if(type === "new") {
+				$("#postList li:last-child").append('<h3>You successfully created this entry!</h3>');
+			} else {
+				console.log("There was an error with the type.");
+			} 
+			$("#postList li:last-child").append('<div><a href="index.html" data-icon="home" data-role="button" data-theme="c" data-inline="true" data-ajax="false">Home</a></div>');
+	$
+	$.mobile.changePage("#postPage");
+}
 // JQuery Couch call to READ the database and output to my list-view list pages
-var readDatabase = function() {
 $.couch.db("adventure").view("adv/adventurers", {
 	success: function(data) {
-		$("#warriorList").html("");
-		$("#rogueList").html("");
-		$("#hunterList").html("");
-		$("#mageList").html("");
-		$("#priestList").html("");
 		for(i=0; i<data.rows.length; i++){
 			var key = data.rows[i].id;
-			
 			if(data.rows[i].value.group[1] === "Warrior") {
 				$("#warriorList").append('<li data-role="list-divider"></li>');
 				$("#warriorList").append('<li data-theme=d></li>');
 				for(var n in data.rows[i].value){
 					var cat = ""+n+"";
+					$("#warriorList li:last-child").attr("id", key);
 					if(data.rows[i].value[cat][0] === "Name: ") {
 						$("#warriorList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
 					} else {
@@ -116,6 +134,7 @@ $.couch.db("adventure").view("adv/adventurers", {
 				$("#rogueList").append('<li data-theme=d></li>');
 				for(var n in data.rows[i].value){
 					var cat = ""+n+"";
+					$("#rogueList li:last-child").attr("id", key);
 					if(data.rows[i].value[cat][0] === "Name: ") {
 						$("#rogueList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
 					} else {
@@ -130,6 +149,7 @@ $.couch.db("adventure").view("adv/adventurers", {
 				$("#hunterList").append('<li data-theme=d></li>');
 				for(var n in data.rows[i].value){
 					var cat = ""+n+"";
+					$("#hunterList li:last-child").attr("id", key);
 					if(data.rows[i].value[cat][0] === "Name: ") {
 						$("#hunterList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
 					} else {
@@ -144,6 +164,7 @@ $.couch.db("adventure").view("adv/adventurers", {
 				$("#mageList").append('<li data-theme=d></li>');
 				for(var n in data.rows[i].value){
 					var cat = ""+n+"";
+					$("#mageList li:last-child").attr("id", key);
 					if(data.rows[i].value[cat][0] === "Name: ") {
 						$("#mageList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
 					} else {
@@ -158,6 +179,7 @@ $.couch.db("adventure").view("adv/adventurers", {
 				$("#priestList").append('<li data-theme=d></li>');
 				for(var n in data.rows[i].value){
 					var cat = ""+n+"";
+					$("#priestList li:last-child").attr("id", key);
 					if(data.rows[i].value[cat][0] === "Name: ") {
 						$("#priestList li:last-child").append('<h3>' + data.rows[i].value[cat][0] + ' ' + data.rows[i].value[cat][1] + '</h3>');
 					} else {
@@ -168,15 +190,10 @@ $.couch.db("adventure").view("adv/adventurers", {
 				$("#priestList li:last-child div:last-child a").attr("key", key);
 			}
 		}$('a.edit').bind("click", editButton);// edits an entry
-		 $('#warriorList').listview('refresh');
-		 $('.edit').button();
-		 $('.edit').button('refresh');
+		 
 	} 
 });
-}
-$("#home").live("pageshow", function() {
-	readDatabase();
-});
+
 var editButton = function() {
 	keyID = $(this).attr("key");
 	$.couch.db("adventure").openDoc(keyID, {
@@ -215,7 +232,7 @@ var deleteButton = function() {
 				delData._id = data._id;
 				delData._rev = data._rev;
 				$.couch.db("adventure").removeDoc(delData);
-				alert("Adventurer was deleted!");
+				//alert("Adventurer was deleted!");
 				
 				$('#name').attr('value', "");
 				$('#age').attr('value', 26);
@@ -232,14 +249,13 @@ var deleteButton = function() {
 				$('#guild').slider('refresh');
 				$('#groups').selectmenu('refresh');
 				$('#name').textinput('enable');
-
-				$.mobile.changePage("#home");
-				$("#home").live("pageshow", function() {
-					readDatabase();
-				});
+				
+				postListing(data, "delete");
+				//$.mobile.changePage("#postPage");
 			}
 		});
 	} else {
 		alert("Adventurer was not deleted.");
 	}
-};	
+};
+});
