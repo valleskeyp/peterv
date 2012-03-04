@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html> 
+<head>
+<meta charset="utf-8" />
+<meta name="HandheldFriendly" content="True"/>
+<meta name="MobileOptimized" content="320"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+<link rel="stylesheet" href="launchStyle.css"  />
+<title>Launch Page</title>
+</head>
+<body>
+<div data-role="page" id="launch">
+	<div data-role="header" data-position="fixed">
+		<h1>Peter Valleskey</h1>
+		<h3>AVF 3/2012</h3>
+	</div>
+	<div data-role="content">
+		<ul data-role="listview" data-divider-theme="d">
+			<li data-role="list-divider"></li>
+			<li>
+				<h1>Crud Apps</h1>
+				<p><a data-role="button" data-rel="external" data-inline="true" href="http://valleskeyp.cloudant.com/adventure/_design/adv/index.html" target="_blank">Original App</a></p>
+				<p><a data-role="button" data-rel="external" data-inline="true" href="http://valleskeyp.cloudant.com/adventure2/_design/adv/index.html" target="_blank">Revised App</a></p>
+			</li>
+			<li data-role="list-divider"></li>
+			<li>
+				<h1>Native Feature Demos</h1>
+				<p>Under Construction</p>
+				<p>Under Construction</p>
+			</li>
+			<li data-role="list-divider"></li>
+			<li>
+				<h1>Discussion posts and videos</h1>
+				<p><a data-role="button" data-inline="true" href="#discussions">Discussions</a></p>
+			</li>
+			<li data-role="list-divider"></li>
+		</ul>
+	</div>
+</div>
+<div data-role="page" id="discussions" data-add-back-btn="true">
+    <div data-role="header" data-position="fixed">
+		<h1>Peter Valleskey</h1>
+		<h3>AVF 3/2012</h3>
+	</div>
+	<div data-role="content">
+        <div data-role="collapsible-set" data-content-theme="d">
+            <div data-role="collapsible" data-collapsed="true">
+                <h3>Week 1</h3>
+                <p>1) Compass, accelerometer, camera, audio, geo-location, video, and more (especially with phonegap).</p>
+                <p>2) Of these most don't seem to fit well with a basic crud functioning app, but the camera might be useful in my app.</p>
+                
+                <p>3) In regards to workflow, I just read/watch all materials for the week as early as possible.  Then I can gauge decently how much time I will need.  After that it is simply getting started and sticking to it at a regular pace, keeping distractions to a minimum.</p>
+                
+                <p>4) The design of my app right now lends itself well to what it intends to accomplish.  It's a pretty straightforward contacts book (with it's own spin), so it doesn't really need distractions.</p>
+                
+                <p>5) As my old app is working, I'll probably leave it alone.  As for revising my app, I look forward to figuring out the best features to incorporate into it.</p>
+            </div>
+            <div data-role="collapsible">
+                <h3>Week 2</h3>
+                <p>Week 2 incoming!</p>
+            </div>
+            <div data-role="collapsible">
+                <h3>Week 3</h3>
+                <p>Week 3 incoming!</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+</body>
+</html>
